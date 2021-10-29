@@ -28,9 +28,9 @@ namespace ApiClient
                 Console.WriteLine("1. HttpClient");
                 Console.WriteLine("2. RestSharp");
                 Console.WriteLine("3. Refit");
-                Console.WriteLine("4. Test Time HttpClient");
-                Console.WriteLine("5. Test Time RestSharp");
-                Console.WriteLine("6. Test Time Refit");
+                Console.WriteLine("4. Test HttpClient Performance");
+                Console.WriteLine("5. Test RestSharp Performance");
+                Console.WriteLine("6. Test Refit Performance");
                 Console.WriteLine("7. Test All");
                 Console.WriteLine("==============================================");
                 Console.WriteLine("[Everything else will exit the application]");
@@ -43,27 +43,40 @@ namespace ApiClient
                     Console.WriteLine("Thanks for using the API Client");
                     continue;
                 }
-
-                var commandRunner = HandleOptions(userChoice);
-                if(validChoices.Contains(userChoice))
-                    await commandRunner.Run();
-                if (testValidChoices.Contains(userChoice))
-                    await commandRunner.TestTimes();
-                if (userChoice == '7')
-                    await RunAllTests();
+                try
+                {
+                    var commandRunner = HandleOptions(userChoice);
+                    if (validChoices.Contains(userChoice))
+                        await commandRunner.Run();
+                    if (testValidChoices.Contains(userChoice))
+                        await commandRunner.TestPerformance();
+                    if (userChoice == '7')
+                        await RunAllTests();
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                }
             } while (IsValidChoice(userChoice));
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
         }
 
         private async Task RunAllTests()
         {
-            await HandleOptions('4').TestTimes();
+            await HandleOptions('4').TestPerformance(true);
             Console.WriteLine("==============================================");
-            await HandleOptions('5').TestTimes();
+            await HandleOptions('5').TestPerformance(true);
             Console.WriteLine("==============================================");
-            await HandleOptions('6').TestTimes();
+            await HandleOptions('6').TestPerformance(true);
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("");
+            Console.WriteLine("Please press any key to continue");
+            Console.ReadKey();
         }
 
         private RunCommandBase HandleOptions(char userChoice)
@@ -88,11 +101,6 @@ namespace ApiClient
         private bool IsValidChoice(char choice)
         {
             return choice == '7' || validChoices.Concat(testValidChoices).Contains(choice);
-        }
-
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
         }
     }
 }

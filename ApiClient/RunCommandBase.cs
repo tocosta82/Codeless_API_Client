@@ -54,10 +54,12 @@ namespace ApiClient
             Console.WriteLine("");
         }
 
-        public async Task TestTimes()
+        public async Task TestPerformance(bool runForAll = false)
         {
-            Console.Clear();
-            Console.WriteLine($"Testing times using {_commandRunnerType}");
+            if(!runForAll) Console.Clear();
+
+            Console.WriteLine($"Testing Performance when using {_commandRunnerType}");
+
             var stopWatch = new Stopwatch();
             stopWatch.Start();
             await PopulateDatabase();

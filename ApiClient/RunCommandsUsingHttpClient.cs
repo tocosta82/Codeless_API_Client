@@ -34,7 +34,8 @@ namespace ApiClient
                     var json = JsonConvert.SerializeObject(item);
                     var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-                    await client.PostAsync(ApiBaseURL, data);
+                    var response = await client.PostAsync(ApiBaseURL, data);
+                    response.EnsureSuccessStatusCode();
                 }
             }
         }
