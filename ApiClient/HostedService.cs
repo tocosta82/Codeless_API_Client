@@ -31,7 +31,7 @@ namespace ApiClient
                 Console.WriteLine("4. Test HttpClient Performance");
                 Console.WriteLine("5. Test RestSharp Performance");
                 Console.WriteLine("6. Test Refit Performance");
-                Console.WriteLine("7. Test All");
+                Console.WriteLine("7. Compare All");
                 Console.WriteLine("==============================================");
                 Console.WriteLine("[Everything else will exit the application]");
 
